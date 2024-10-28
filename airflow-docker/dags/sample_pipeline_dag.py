@@ -40,21 +40,23 @@ def preprocess_data_task():
     preprocessed_data = preprocess_data(data)
     return preprocessed_data
 
-# Task 3: Train Model
-def train_model_task():
+def feature_engineering_task():
     """
-    Airflow task to train the model using the preprocessed dataset and save the model.
+    Airflow task to preprocess the loaded dataset using the preprocessing module.
     """
-    from src.preprocessing import preprocess_data
     from src.data_loader import load_data
     data = load_data()
     preprocessed_data = preprocess_data(data)
-    train_model(preprocessed_data)
+    best_features_churn = select_best_k_features(preprocessed_data, target_column)
+    best_features_device_upgrade = create_device_upgrade_subset(processed_data)
+    return best_features_churn, best_features_device_upgrade
+
+
 
 # Define tasks in the DAG
 load_data_task = PythonOperator(task_id='load_data', python_callable=load_data_task, dag=dag)
 preprocess_data_task = PythonOperator(task_id='preprocess_data', python_callable=preprocess_data_task, dag=dag)
-train_model_task = PythonOperator(task_id='train_model', python_callable=train_model_task, dag=dag)
+feature_engineering_task = PythonOperator(task_id='feature_engineering_task', python_callable=feature_engineering_task, dag=dag)
 
 # Set task dependencies
 load_data_task >> preprocess_data_task >> train_model_task

@@ -3,7 +3,7 @@
 import pandas as pd
 import os
 
-def load_data(file_path='data/raw/train.csv'):
+def load_data(file_path=r'C:\Users\A V NITHYA\Downloads\train.csv'): #adjust path as needed
     """
     Load the dataset from the specified file path, using DVC if the file is not found locally.
 

@@ -2,9 +2,12 @@
 
 import os
 
-# Paths to data files and directories
-RAW_DATA_PATH = 'data/raw/train.csv'
-PROCESSED_DATA_PATH = 'data/processed/train_processed.csv'
+# Paths to data files and directories #adjust accordingly 
+RAW_DATA_PATH = r'C:\Users\A V NITHYA\Downloads\train.csv'
+PROCESSED_DATA_PATH = r'C:\Users\A V NITHYA\MLOpsProject\Telecom-Device-Upgrade-Prediction\data\processed\train_processed.csv'
+CHURN_FEATURES_PATH = r'C:\Users\A V NITHYA\MLOpsProject\Telecom-Device-Upgrade-Prediction\data\processed\best_features_for_churn.csv'
+DEVICE_UPGRADE_FEATURES_PATH = r'C:\Users\A V NITHYA\MLOpsProject\Telecom-Device-Upgrade-Prediction\data\processed\best_features_for_device_upgrade.csv'
+
 MODEL_SAVE_PATH = 'models/trained_model.pkl'
 
 # Model parameters
