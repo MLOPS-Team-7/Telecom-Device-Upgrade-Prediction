@@ -1,12 +1,18 @@
 # src/config.py
 
+import pandas as pd
 import os
+import sys
+
+current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+file_path = os.path.join(current_dir, 'data/raw/train.csv')
 
 # Paths to data files and directories #adjust accordingly 
-RAW_DATA_PATH = r'C:\Users\A V NITHYA\Downloads\train.csv'
-PROCESSED_DATA_PATH = r'C:\Users\A V NITHYA\MLOpsProject\Telecom-Device-Upgrade-Prediction\data\processed\train_processed.csv'
-CHURN_FEATURES_PATH = r'C:\Users\A V NITHYA\MLOpsProject\Telecom-Device-Upgrade-Prediction\data\processed\best_features_for_churn.csv'
-DEVICE_UPGRADE_FEATURES_PATH = r'C:\Users\A V NITHYA\MLOpsProject\Telecom-Device-Upgrade-Prediction\data\processed\best_features_for_device_upgrade.csv'
+RAW_DATA_PATH = os.path.join(current_dir, 'data/raw/train.csv')
+PROCESSED_DATA_PATH = os.path.join(current_dir, 'data/processed/train_processed.csv')
+CHURN_FEATURES_PATH = os.path.join(current_dir, 'data/processed/best_features_for_churn.csv')
+DEVICE_UPGRADE_FEATURES_PATH = os.path.join(current_dir, 'data/processed/best_features_for_device_upgrade.csv')
 
 MODEL_SAVE_PATH = 'models/trained_model.pkl'
 
