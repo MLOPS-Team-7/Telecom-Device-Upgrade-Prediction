@@ -1,15 +1,12 @@
 # src/main.py
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-
 import pandas as pd
-from src.config import RAW_DATA_PATH, PROCESSED_DATA_PATH
-from src.config import CHURN_FEATURES_PATH, DEVICE_UPGRADE_FEATURES_PATH
-from src.data_loader import load_data
-from src.preprocessing import preprocess_data
-from src.feature_engineering import find_optimal_k, select_best_k_features, create_device_upgrade_subset
+from config import RAW_DATA_PATH, PROCESSED_DATA_PATH
+from config import CHURN_FEATURES_PATH, DEVICE_UPGRADE_FEATURES_PATH
+from data_loader import load_data
+from preprocessing import preprocess_data
+from feature_engineering import find_optimal_k, select_best_k_features, create_device_upgrade_subset
 
 def main():
     """
