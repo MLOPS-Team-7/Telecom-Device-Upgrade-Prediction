@@ -2,8 +2,10 @@
 
 import pandas as pd
 import os
+import sys
+from config import RAW_DATA_PATH, PROCESSED_DATA_PATH
 
-def load_data(file_path=r'C:\Users\A V NITHYA\Downloads\train.csv'): #adjust path as needed
+def load_data(file_path=RAW_DATA_PATH): #adjust path as needed
     """
     Load the dataset from the specified file path, using DVC if the file is not found locally.
 
