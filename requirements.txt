@@ -32,3 +32,4 @@ pandas
 pyarrow 
 bottleneck 
 numexpr
+pendulum<3.0.0
