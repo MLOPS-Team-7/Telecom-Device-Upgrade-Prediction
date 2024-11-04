@@ -1,6 +1,6 @@
 # Code to slice test data for later use (performance evaluation and mitigation of bias)  
 import pandas as pd
-from config import TEST_DATA_PATH
+from src.config import TEST_DATA_PATH
 
 # Slice the data by churn category (0 or 1)
 def slice_by_churn(data):
