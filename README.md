@@ -40,7 +40,20 @@ The project utilizes the **Cell2Cell dataset**, which is specifically designed t
 1. **Device-Related Attributes**: Includes details such as handset models, the number of handsets owned, and handset price. These attributes help capture the current specifications and value of the customer’s device, which are indicative of upgrade potential.
 2. **Demographic Data**: Contains socioeconomic details like income group, occupation, and geographic location (represented by PrizmCode). These features provide insight into factors that may influence a customer’s upgrade decisions.
 
-While the dataset doesn’t directly label device upgrades, we infer upgrade events using proxies such as changes in handset models, fluctuations in handset price, and the duration since the last equipment purchase (`CurrentEquipmentDays`). These indicators allow us to construct a target variable, estimating the likelihood of a customer upgrading their device.
+Since the dataset lacked a direct indicator for device upgrades, we created a custom **DeviceUpgrade** feature based on the following criteria:
+
+- **MonthlyMinutes > 3000**
+- **RetentionCalls > 2**
+- **RetentionOffersAccepted > 0**
+- **HandsetWebCapable == 0**
+- **HandsetRefurbished == 1**
+- **CurrentEquipmentDays > 340**
+- **CreditRating > 5**
+- **MadeCallToRetentionTeam == 1**
+- **RespondsToMailOffers == 1**
+
+These thresholds were defined using domain research and expert insights to capture upgrade likelihood.
+
 
 ### Data Card
 
