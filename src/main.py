@@ -23,7 +23,7 @@ def main():
     best_features_churn = select_best_k_features(processed_data, target_column)
     best_features_device_upgrade = create_device_upgrade_subset(processed_data)
     best_features_churn.to_csv(CHURN_FEATURES_PATH, index=False) 
-    best_features_device_upgrade.to_csv(DEVICE_UPGRADE_FEATURES_PATH, index=False) 
+    best_features_device_upgrade.to_csv(DEVICE_UPGRADE_FEATURES_PATH, index=False)
 
 if __name__ == "__main__":
     main()

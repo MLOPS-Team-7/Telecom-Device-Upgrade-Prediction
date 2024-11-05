@@ -2,7 +2,7 @@ import tensorflow_data_validation as tfdv
 import os
 
 # Paths
-data_path = 'data/test.csv'  # Update with the path to new data
+data_path = 'data/raw/test.csv'  # Update with the path to new data
 schema_path = 'data/schema/schema.pbtxt'  # Path to your schema
 
 def validate_data():
@@ -35,7 +35,24 @@ def validate_data():
     if anomalies.anomaly_info:
         print("Data validation anomalies detected:")
         for anomaly in anomalies.anomaly_info:
-            print(f"- Anomaly Type: {anomaly.type} | Details: {anomaly.details}")
+            # Print the entire anomaly object to inspect its structure
+            print(f"Anomaly: {anomaly}")
+
+            # Access and print the anomaly type
+            if hasattr(anomaly, 'type'):
+                print(f"- Anomaly Type: {anomaly.type}")
+            
+            # Access and print the affected feature
+            if hasattr(anomaly, 'path'):
+                print(f"- Affected Feature: {anomaly.path}")
+            
+            # Access and print anomaly details (if available)
+            if hasattr(anomaly, 'details'):
+                print(f"- Anomaly Details: {anomaly.details}")
+            
+            # If attributes are not found, print the whole anomaly object
+            else:
+                print(f"Anomaly object has no 'type' or 'details' attributes. Full object: {anomaly}")
     else:
         print("Data validation passed with no anomalies.")
 

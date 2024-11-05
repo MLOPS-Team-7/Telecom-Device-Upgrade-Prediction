@@ -1,0 +1,892 @@
+feature {
+  name: "CustomerID"
+  type: INT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "Churn"
+  type: BYTES
+  domain: "Churn"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "MonthlyRevenue"
+  value_count {
+    min: 1
+    max: 1
+  }
+  type: FLOAT
+  presence {
+    min_count: 1
+  }
+}
+feature {
+  name: "MonthlyMinutes"
+  value_count {
+    min: 1
+    max: 1
+  }
+  type: FLOAT
+  presence {
+    min_count: 1
+  }
+}
+feature {
+  name: "TotalRecurringCharge"
+  value_count {
+    min: 1
+    max: 1
+  }
+  type: FLOAT
+  presence {
+    min_count: 1
+  }
+}
+feature {
+  name: "DirectorAssistedCalls"
+  value_count {
+    min: 1
+    max: 1
+  }
+  type: FLOAT
+  presence {
+    min_count: 1
+  }
+}
+feature {
+  name: "OverageMinutes"
+  value_count {
+    min: 1
+    max: 1
+  }
+  type: FLOAT
+  presence {
+    min_count: 1
+  }
+}
+feature {
+  name: "RoamingCalls"
+  value_count {
+    min: 1
+    max: 1
+  }
+  type: FLOAT
+  presence {
+    min_count: 1
+  }
+}
+feature {
+  name: "PercChangeMinutes"
+  value_count {
+    min: 1
+    max: 1
+  }
+  type: FLOAT
+  presence {
+    min_count: 1
+  }
+}
+feature {
+  name: "PercChangeRevenues"
+  value_count {
+    min: 1
+    max: 1
+  }
+  type: FLOAT
+  presence {
+    min_count: 1
+  }
+}
+feature {
+  name: "DroppedCalls"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "BlockedCalls"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "UnansweredCalls"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "CustomerCareCalls"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "ThreewayCalls"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "ReceivedCalls"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "OutboundCalls"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "InboundCalls"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "PeakCallsInOut"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "OffPeakCallsInOut"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "DroppedBlockedCalls"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "CallForwardingCalls"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "CallWaitingCalls"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "MonthsInService"
+  type: INT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "UniqueSubs"
+  type: INT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "ActiveSubs"
+  type: INT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "ServiceArea"
+  value_count {
+    min: 1
+    max: 1
+  }
+  type: BYTES
+  presence {
+    min_count: 1
+  }
+}
+feature {
+  name: "Handsets"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "HandsetModels"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "CurrentEquipmentDays"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "AgeHH1"
+  value_count {
+    min: 1
+    max: 1
+  }
+  type: FLOAT
+  presence {
+    min_count: 1
+  }
+}
+feature {
+  name: "AgeHH2"
+  value_count {
+    min: 1
+    max: 1
+  }
+  type: FLOAT
+  presence {
+    min_count: 1
+  }
+}
+feature {
+  name: "ChildrenInHH"
+  type: BYTES
+  domain: "ChildrenInHH"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "HandsetRefurbished"
+  type: BYTES
+  domain: "HandsetRefurbished"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "HandsetWebCapable"
+  type: BYTES
+  domain: "HandsetWebCapable"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "TruckOwner"
+  type: BYTES
+  domain: "TruckOwner"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "RVOwner"
+  type: BYTES
+  domain: "RVOwner"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "Homeownership"
+  type: BYTES
+  domain: "Homeownership"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "BuysViaMailOrder"
+  type: BYTES
+  domain: "BuysViaMailOrder"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "RespondsToMailOffers"
+  type: BYTES
+  domain: "RespondsToMailOffers"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "OptOutMailings"
+  type: BYTES
+  domain: "OptOutMailings"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "NonUSTravel"
+  type: BYTES
+  domain: "NonUSTravel"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "OwnsComputer"
+  type: BYTES
+  domain: "OwnsComputer"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "HasCreditCard"
+  type: BYTES
+  domain: "HasCreditCard"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "RetentionCalls"
+  type: INT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "RetentionOffersAccepted"
+  type: INT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "NewCellphoneUser"
+  type: BYTES
+  domain: "NewCellphoneUser"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "NotNewCellphoneUser"
+  type: BYTES
+  domain: "NotNewCellphoneUser"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "ReferralsMadeBySubscriber"
+  type: INT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "IncomeGroup"
+  type: INT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "OwnsMotorcycle"
+  type: BYTES
+  domain: "OwnsMotorcycle"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "AdjustmentsToCreditRating"
+  type: INT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "HandsetPrice"
+  type: BYTES
+  domain: "HandsetPrice"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "MadeCallToRetentionTeam"
+  type: BYTES
+  domain: "MadeCallToRetentionTeam"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "CreditRating"
+  type: BYTES
+  domain: "CreditRating"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "PrizmCode"
+  type: BYTES
+  domain: "PrizmCode"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "Occupation"
+  type: BYTES
+  domain: "Occupation"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "MaritalStatus"
+  type: BYTES
+  domain: "MaritalStatus"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+string_domain {
+  name: "Churn"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "ChildrenInHH"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "HandsetRefurbished"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "HandsetWebCapable"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "TruckOwner"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "RVOwner"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "Homeownership"
+  value: "Known"
+  value: "Unknown"
+}
+string_domain {
+  name: "BuysViaMailOrder"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "RespondsToMailOffers"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "OptOutMailings"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "NonUSTravel"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "OwnsComputer"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "HasCreditCard"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "NewCellphoneUser"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "NotNewCellphoneUser"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "OwnsMotorcycle"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "HandsetPrice"
+  value: "10"
+  value: "100"
+  value: "130"
+  value: "150"
+  value: "180"
+  value: "200"
+  value: "240"
+  value: "250"
+  value: "30"
+  value: "300"
+  value: "40"
+  value: "400"
+  value: "500"
+  value: "60"
+  value: "80"
+  value: "Unknown"
+}
+string_domain {
+  name: "MadeCallToRetentionTeam"
+  value: "No"
+  value: "Yes"
+}
+string_domain {
+  name: "CreditRating"
+  value: "1-Highest"
+  value: "2-High"
+  value: "3-Good"
+  value: "4-Medium"
+  value: "5-Low"
+  value: "6-VeryLow"
+  value: "7-Lowest"
+}
+string_domain {
+  name: "PrizmCode"
+  value: "Other"
+  value: "Rural"
+  value: "Suburban"
+  value: "Town"
+}
+string_domain {
+  name: "Occupation"
+  value: "Clerical"
+  value: "Crafts"
+  value: "Homemaker"
+  value: "Other"
+  value: "Professional"
+  value: "Retired"
+  value: "Self"
+  value: "Student"
+}
+string_domain {
+  name: "MaritalStatus"
+  value: "No"
+  value: "Unknown"
+  value: "Yes"
+}
