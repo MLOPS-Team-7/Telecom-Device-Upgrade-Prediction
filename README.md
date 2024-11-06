@@ -134,7 +134,6 @@ Here’s an overview of the project's directory structure:
 ### Description of Key Folders
 - **airflow/dags/**: Contains the Airflow Directed Acyclic Graphs (DAGs) used to orchestrate different stages of the pipeline.
 - **data/**: Holds raw and processed data files. You may use `data/raw` for unprocessed data and `data/processed` for prepared data.
-- **notebooks/**: Contains Jupyter notebooks for exploratory data analysis (EDA) and model experimentation.
 - **src/**: Contains all core Python scripts organized by task:
   - **data_preprocessing/**: Data preparation and transformation scripts.
   - **model_training/**: Model training and hyperparameter tuning scripts.
