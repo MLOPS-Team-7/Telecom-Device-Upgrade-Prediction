@@ -34,6 +34,7 @@ def find_optimal_k(data, target_column, k_range=range(25, 31)):
     print(f"Optimal k found: {best_k}")
     return best_k
 
+
 def select_best_k_features(data, target_column):
     """
     Selects the top k features based on the optimal k value from SelectKBest 
@@ -44,7 +45,7 @@ def select_best_k_features(data, target_column):
     target_column (str): The name of the target column.
 
     Returns:
-    pd.DataFrame: DataFrame containing the selected features.
+    pd.DataFrame: DataFrame containing the selected features along with the target column.
     """
     # Find optimal k
     k = find_optimal_k(data, target_column)
@@ -55,55 +56,18 @@ def select_best_k_features(data, target_column):
     
     # Select top k features
     selector = SelectKBest(score_func=f_classif, k=k)
-    selector.fit_transform(X, y)
+    X_selected = selector.fit_transform(X, y)
     selected_feature_names = X.columns[selector.get_support(indices=True)]
     
     # Create a DataFrame of selected features
-    best_k_features_df = data[selected_feature_names]
+    best_k_features_df = pd.DataFrame(X_selected, columns=selected_feature_names, index=data.index)
+    
+    # Concatenate the target column with the selected features
+    best_k_features_df = pd.concat([best_k_features_df, y], axis=1)
     
     print(f"Top {k} features for churn selected.")
     return best_k_features_df
 
-def create_device_upgrade_subset(data):
-    """
-    Creates a subset for non-churned customers, adds a device-upgrade column based on specified rules, 
-    and returns the subset DataFrame.
-
-    Parameters:
-    data (pd.DataFrame): The dataset including churn and other relevant features.
-
-    Returns:
-    pd.DataFrame: DataFrame containing the device upgrade subset.
-    """
-    # Filter customers who did not churn
-    non_churned_customers = data[data['Churn'] == 0].copy()
-    
-    # Define the conditions for device upgrade
-    upgrade_conditions = (
-        (non_churned_customers['MonthlyMinutes'] > 3000) &
-        (non_churned_customers['RetentionCalls'] > 2) &
-        (non_churned_customers['RetentionOffersAccepted'] > 0) &
-        (non_churned_customers['HandsetWebCapable'] == 0) &
-        (non_churned_customers['HandsetRefurbished'] == 1) &
-        (non_churned_customers['CurrentEquipmentDays'] > 340) &
-        (non_churned_customers['CreditRating'] > 5) &
-        (non_churned_customers['MadeCallToRetentionTeam'] == 1) &
-        (non_churned_customers['RespondsToMailOffers'] == 1)
-    )
-    
-    # Create the 'device-upgrade' column
-    non_churned_customers['DeviceUpgrade'] = upgrade_conditions.astype(int)
-    
-    # Select only the necessary columns for the final subset
-    selected_columns = [
-        'MonthlyMinutes', 'RetentionCalls', 'RetentionOffersAccepted', 'HandsetWebCapable',
-        'HandsetRefurbished', 'CurrentEquipmentDays', 'CreditRating', 'MadeCallToRetentionTeam',
-        'RespondsToMailOffers', 'DeviceUpgrade'
-    ]
-    device_upgrade_subset_df = non_churned_customers[selected_columns]
-
-    print(f"Device upgrade subset created.")
-    return device_upgrade_subset_df
 
 def main():
     """
@@ -117,10 +81,10 @@ def main():
     # Run feature engineering functions and capture the returned DataFrames
     find_optimal_k(data, target_column, k_range=range(25, 31))
     best_k_features_df = select_best_k_features(data, target_column)
-    device_upgrade_subset_df = create_device_upgrade_subset(data)
+    ## device_upgrade_subset_df = create_device_upgrade_subset(data)
 
     print(best_k_features_df.head(5))
-    print(device_upgrade_subset_df.head(5))
+    #print(device_upgrade_subset_df.head(5))
 
     print("Feature Engineering Completed")
 
