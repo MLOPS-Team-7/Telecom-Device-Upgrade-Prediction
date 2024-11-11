@@ -11,7 +11,9 @@ file_path = os.path.join(current_dir, 'data/raw/train.csv')
 # Paths to data files and directories #adjust accordingly 
 RAW_DATA_PATH = os.path.join(current_dir, 'data/raw/train.csv')
 PROCESSED_DATA_PATH = os.path.join(current_dir, 'data/processed/train_processed.csv')
+PROCESSED_TEST_PATH = os.path.join(current_dir, 'data/processed/test_processed.csv')
 CHURN_FEATURES_PATH = os.path.join(current_dir, 'data/processed/best_features_for_churn.csv')
+CHURN_TEST_PATH = os.path.join(current_dir, 'data/processed/best_features_test.csv')
 DEVICE_UPGRADE_FEATURES_PATH = os.path.join(current_dir, 'data/processed/best_features_for_device_upgrade.csv')
 TEST_DATA_PATH = os.path.join(current_dir, 'data/raw/test.csv')
 MODEL_SAVE_PATH = 'models/trained_model.pkl'

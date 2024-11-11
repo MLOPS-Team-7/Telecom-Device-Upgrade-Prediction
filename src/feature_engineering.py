@@ -69,6 +69,38 @@ def select_best_k_features(data, target_column):
     return best_k_features_df
 
 
+
+def transform_and_save_test_features(train_features_path, test_data_path, target_column):
+    """
+    Transforms the test data to have the same selected features as the training data 
+    and saves the selected features and target column as a CSV file.
+
+    Parameters:
+    train_features_path (str): Path to the CSV file with selected training features.
+    test_data_path (str): Path to the CSV file containing the raw test data.
+    target_column (str): The name of the target column.
+    output_path (str): Path where the selected test features CSV will be saved.
+    """
+    # Load selected features from training features CSV
+    train_features_df = pd.read_csv(train_features_path)
+    selected_feature_names = train_features_df.drop(columns=[target_column]).columns  # Exclude target column
+    
+    # Load the test data
+    test_data = pd.read_csv(test_data_path)
+    
+    # Select only the columns present in selected_feature_names
+    X_test = test_data[selected_feature_names]
+    y_test = test_data[target_column]
+    
+    # Combine selected features and target into a DataFrame
+    best_k_features_df_test = pd.concat([X_test, y_test], axis=1)
+    
+
+    print(f"Selected features for test data")
+    return best_k_features_df_test 
+
+
+
 def main():
     """
     Main function to run the feature engineering and other processes.
