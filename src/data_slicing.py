@@ -1,60 +1,57 @@
-# Code to slice test data for later use (performance evaluation and mitigation of bias)  
 import pandas as pd
-from config import TEST_DATA_PATH
+from google.cloud import storage
+from config import CHURN_TEST_PATH
 
-# Slice the data by churn category (0 or 1)
-def slice_by_churn(data):
-    churn_0 = data[data['Churn'] == 'No']
-    churn_1 = data[data['Churn'] == 'Yes']
-    return churn_0, churn_1
+# Upload DataFrame as a CSV directly to GCS
+def upload_to_gcs(dataframe, bucket_name, destination_blob_name):
+    """
+    Uploads a DataFrame to Google Cloud Storage as a CSV file.
 
-# Slice the data by a specific column and return a dictionary of DataFrames
-def slice_by_column(data, column_name):
-    grouped_data = data.groupby(column_name)
-    return {group: subset for group, subset in grouped_data}
+    Parameters:
+    - dataframe: The DataFrame to upload.
+    - bucket_name: GCS bucket name.
+    - destination_blob_name: Path in GCS bucket where the CSV file will be stored.
+    """
+    client = storage.Client()
+    bucket = client.bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
+    blob.upload_from_string(dataframe.to_csv(index=False), 'text/csv')
+    print(f"Data uploaded to {destination_blob_name} in bucket {bucket_name}.")
 
-# Create a new column for binning based on 'CurrentEquipmentDays' and slice by bins
-def slice_by_equipment_days(data, bins, labels):
-    data['equipment_days_range'] = pd.cut(data['CurrentEquipmentDays'], bins=bins, labels=labels, include_lowest=True)
-    grouped_data = data.groupby('equipment_days_range')
-    return {label: subset for label, subset in grouped_data}
+# Slice data into equal-sized bins for a given column and upload each bin to GCS
+def slice_and_upload(data, column_name, num_bins, bucket_name):
+    # Create a temporary copy of the data to avoid modifying the original DataFrame
+    temp_data = data.copy()
+    
+    # Generate bins for the column with equal size
+    range_column = f'{column_name}_range'
+    temp_data[range_column] = pd.cut(temp_data[column_name], bins=num_bins, labels=[f'bin_{i+1}' for i in range(num_bins)], include_lowest=True)
+    
+    # Group data by the binned column
+    grouped_data = temp_data.groupby(range_column)
+    
+    # Upload each bin to GCS
+    for label, subset in grouped_data:
+        # Drop the temporary range column before uploading
+        subset = subset.drop(columns=[range_column])
+        
+        filename = f'{column_name}_{label}.csv'
+        destination_blob_name = f"{column_name}/{filename}"
+        upload_to_gcs(subset, bucket_name, destination_blob_name)
 
-# Main function to execute the slicing and display results
+# Main function to perform slicing and upload for multiple columns
 def main():
     # Load the data
-    test_data = pd.read_csv(TEST_DATA_PATH)
+    test_data = pd.read_csv(CHURN_TEST_PATH)
     
-    # Slice by churn
-    churn_0, churn_1 = slice_by_churn(test_data)
-    print("Churn 0 slice:")
-    print(churn_0.head())
-    print("\nChurn 1 slice:")
-    print(churn_1.head())
-    
-    # Slice by income group
-    income_group_slices = slice_by_column(test_data, 'IncomeGroup')
-    print("\nIncome group slices:")
-    for group, data in income_group_slices.items():
-        print(f"Income group: {group}")
-        print(data.head())
-    
-    # Slice by credit rating
-    credit_rating_slices = slice_by_column(test_data, 'CreditRating')
-    print("\nCredit rating slices:")
-    for rating, data in credit_rating_slices.items():
-        print(f"Credit rating: {rating}")
-        print(data.head())
-    
-    # Define bins and labels for equipment days
-    bins = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-    labels = ['0-100', '100-200', '200-300', '300-400', '400-500', '500-600', '600-700', '700-800', '800-900', '900-1000']
-    
-    # Slice by equipment days range
-    equipment_days_range_slices = slice_by_equipment_days(test_data, bins, labels)
-    print("\nEquipment days range slices:")
-    for label, data in equipment_days_range_slices.items():
-        print(f"Equipment days range: {label}")
-        print(data.head())
+    # Define the columns to slice and the number of bins
+    columns_to_slice = ['CurrentEquipmentDays', 'PercChangeMinutes', 'AgeHH1']
+    num_bins = 5
+    GCS_BUCKET_NAME = 'data_slices_for_bias_detection' 
+
+    # Slice and upload data for each specified column
+    for column in columns_to_slice:
+        slice_and_upload(test_data, column, num_bins, GCS_BUCKET_NAME)
 
 # Run the main function
 if __name__ == "__main__":
