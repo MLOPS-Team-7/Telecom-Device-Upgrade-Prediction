@@ -1,6 +1,6 @@
 import pandas as pd
 from google.cloud import storage
-from config import CHURN_TEST_PATH
+from src.config import CHURN_TEST_PATH
 
 # Upload DataFrame as a CSV directly to GCS
 def upload_to_gcs(dataframe, bucket_name, destination_blob_name):
