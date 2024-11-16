@@ -1,5 +1,73 @@
 # Telecom-Device-Upgrade-Prediction
-An MLOps project to predict telecom device upgrades using customer demographics and handset data. 
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Data](#data)
+   - [Dataset Information](#dataset-information)
+   - [Data Card](#data-card)
+3. [Architecture](#architecture)
+4. [Prerequisites](#prerequisites)
+5. [Project Structure](#project-structure)
+6. [Setup Overview](#setup-overview)
+7. [Getting Started](#getting-started)
+   - [1. Clone the Repository](#1-clone-the-repository)
+   - [2. Install Dependencies](#2-install-dependencies)
+   - [3. Set Up GCP Authentication](#3-set-up-gcp-authentication)
+
+
+---
+
+## Overview
+
+In this project, we embark on a journey to build an end-to-end **Telecom Churn and Device Upgrade Prediction** MLOps pipeline, leveraging the capabilities of Airflow and Google Cloud Platform (GCP). This pipeline automates every stage of the machine learning workflow—from data acquisition and preprocessing to model training, deployment, and monitoring—ensuring scalability, reliability, and continuous improvement.
+
+Key objectives include accurately predicting customer churn and identifying upgrade needs for loyal customers, enabling telecom companies to offer timely, personalized marketing strategies:
+
+1. **Churn Prediction**: The model first predicts customer churn based on a combination of demographics and handset usage data.
+2. **Device Upgrade Prediction**: For customers likely to stay, the model further assesses the probability of a device upgrade, allowing for targeted upgrade offers.
+
+By integrating MLOps practices, this pipeline ensures reproducibility and robustness through continuous integration, data versioning, and automated model retraining. Additionally, the pipeline incorporates bias detection and mitigation, providing equitable model performance across diverse customer subgroups.
+
+---
+
+## Data
+
+### Dataset Information
+
+The project utilizes the **Cell2Cell dataset**, which is specifically designed to analyze telecom customer behavior and includes features essential for predicting device upgrades and customer churn. The dataset is managed by the Teradata Center for Customer Relationship Management at Duke University and is publicly available on Kaggle.
+
+1. **Device-Related Attributes**: Includes details such as handset models, the number of handsets owned, and handset price. These attributes help capture the current specifications and value of the customer’s device, which are indicative of upgrade potential.
+2. **Demographic Data**: Contains socioeconomic details like income group, occupation, and geographic location (represented by PrizmCode). These features provide insight into factors that may influence a customer’s upgrade decisions.
+
+Since the dataset lacked a direct indicator for device upgrades, we created a custom **DeviceUpgrade** feature based on the following criteria:
+
+- **MonthlyMinutes > 3000**
+- **RetentionCalls > 2**
+- **RetentionOffersAccepted > 0**
+- **HandsetWebCapable == 0**
+- **HandsetRefurbished == 1**
+- **CurrentEquipmentDays > 340**
+- **CreditRating > 5**
+- **MadeCallToRetentionTeam == 1**
+- **RespondsToMailOffers == 1**
+
+These thresholds were defined using domain research and expert insights to capture upgrade likelihood.
+
+
+### Data Card
+
+| Attribute          | Details                                                                 |
+|--------------------|-------------------------------------------------------------------------|
+| **Dataset Name**   | Cell2Cell dataset                                                      |
+| **Source**         | [Kaggle - Telecom Churn Dataset](https://www.kaggle.com/datasets/jpacse/datasets-for-churn-telecom)  |
+| **Size**           | Training Data: ~51,047 rows, 58 columns<br>Holdout Data: ~20,000 rows, 58 columns |
+| **Data Format**    | CSV (Comma-Separated Values)                                           |
+| **Data Types**     | Numerical (e.g., handset price, days since last upgrade), Categorical (e.g., handset model, income group, occupation) |
+
+---
+
+## Architecture
 
 ![Architechutre Diagram](https://github.com/MLOPS-Team-7/Telecom-Device-Upgrade-Prediction/blob/main/GCP_MLOps_Diagram.jpg)
 
@@ -39,3 +107,78 @@ Proposed Architechture Diagram and Workflow in GCP
 - This final DAG manages the communication and reporting aspects
 
 Each DAG is orchestrated using Airflow, and they're interconnected to form a complete ML pipeline from data ingestion to final reporting. The workflow proposed includes comprehensive monitoring throughout the process with Cloud Monitoring integration at various stages.
+
+---
+
+
+## Prerequisites
+
+To set up and run this project, ensure you have the following tools and accounts:
+
+- **Git**: For version control and managing code changes.
+- **Docker**: To create consistent containerized environments.
+- **Airflow**: Required for orchestrating the data pipeline workflow.
+- **DVC (Data Version Control)**: Used to track and manage dataset versions.
+- **Python 3.x**: Necessary for running the project’s scripts and code.
+- **Pip**: Python package manager for installing project dependencies.
+- **Google Cloud Platform (GCP) Account**: Required to access GCP services leveraged in the project.
+
+These tools are essential for setting up a reproducible and robust MLOps pipeline.
+
+---
+
+## Project Structure
+
+Here’s an overview of the project's directory structure:
+
+### Description of Key Folders
+- **airflow/dags/**: Contains the Airflow Directed Acyclic Graphs (DAGs) used to orchestrate different stages of the pipeline.
+- **data/**: Holds raw and processed data files. You may use `data/raw` for unprocessed data and `data/processed` for prepared data.
+- **src/**: Contains all core Python scripts organized by task:
+  - **data_preprocessing/**: Data preparation and transformation scripts.
+  - **model_training/**: Model training and hyperparameter tuning scripts.
+  - **model_evaluation/**: Scripts for evaluating model performance and detecting drift.
+  - **inference/**: Code for making predictions with the trained model.
+  - **utils/**: Helper functions and utilities shared across various modules.
+- **tests/**: Contains unit and integration tests for validating the project’s functionality.
+- **Dockerfile**: Used to create a Docker image, enabling consistent environment setup.
+- **requirements.txt**: Lists all the Python packages needed to run the project.
+
+This structure ensures modularity, scalability, and ease of navigation for each stage of the project. Let me know if you need more details on any specific part!
+
+
+---
+
+## Setup Overview
+
+### High-Level Steps
+1. **GCP Setup**: Create a GCP project, enable APIs, and configure a service account.
+2. **Environment Configuration**:
+   - Install Docker and Airflow.
+   - Set up a Python virtual environment for dependencies.
+   - Configure GCP credentials.
+3. **Data Preparation**:
+   - Prepare and upload datasets (train, test, holdout) to GCS.
+4. **Data Retrieval**: Use a script to fetch data from GCS for local processing.
+
+---
+
+## Getting Started
+
+### 1. Clone the Repository
+   ```bash
+   git clone https://github.com/MLOPS-Team-7/Telecom-Device-Upgrade-Prediction.git
+   cd Telecom-Device-Upgrade-Prediction
+  ```
+
+### 2. Install Dependencies
+   ```bash
+   pip install -r requirements.txt
+  ```
+
+### 3. Set Up GCP Authentication
+   ```bash
+   export GOOGLE_APPLICATION_CREDENTIALS="path/to/your-service-account-file.json"
+  ```
+
+

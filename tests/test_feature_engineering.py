@@ -35,7 +35,7 @@ class TestFeatureEngineering(unittest.TestCase):
         """
         Test the find_optimal_k function.
         """
-        optimal_k = find_optimal_k(self.sample_data, self.target_column, k_range=range(1, 10))
+        optimal_k = find_optimal_k(self.sample_data, self.target_column, k_range=range(25, 30))
         self.assertTrue(optimal_k > 0)
         print(f"Test passed: Optimal k found is {optimal_k}.")
 

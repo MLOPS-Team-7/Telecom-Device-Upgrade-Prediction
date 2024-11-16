@@ -3,7 +3,7 @@
 import pandas as pd
 import os
 import sys
-from src.config import RAW_DATA_PATH, PROCESSED_DATA_PATH
+from config import RAW_DATA_PATH, PROCESSED_DATA_PATH
 
 def load_data(file_path=RAW_DATA_PATH): #adjust path as needed
     """

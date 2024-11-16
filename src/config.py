@@ -1,20 +1,29 @@
 # src/config.py
-
-import pandas as pd
 import os
-import sys
 
-current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Dynamically get the base directory (parent of the current script's location)
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-file_path = os.path.join(current_dir, 'data/raw/train.csv')
+# Paths to data files and directories (relative to BASE_DIR)
+RAW_DATA_PATH = os.path.join(BASE_DIR, 'data', 'raw', 'train.csv')
+PROCESSED_DATA_PATH = os.path.join(BASE_DIR, 'data', 'processed', 'train_processed.csv')
+PROCESSED_TEST_PATH = os.path.join(BASE_DIR, 'data', 'processed', 'test_processed.csv')
+CHURN_FEATURES_PATH = os.path.join(BASE_DIR, 'data', 'processed', 'best_features_for_churn.csv')
+CHURN_TEST_PATH = os.path.join(BASE_DIR, 'data', 'processed', 'best_features_test.csv')
+DEVICE_UPGRADE_FEATURES_PATH = os.path.join(BASE_DIR, 'data', 'processed', 'best_features_for_device_upgrade.csv')
+TEST_DATA_PATH = os.path.join(BASE_DIR, 'data', 'raw', 'test.csv')
+MODEL_SAVE_PATH = os.path.join(BASE_DIR, 'models', 'trained_model.pkl')
 
-# Paths to data files and directories #adjust accordingly 
-RAW_DATA_PATH = os.path.join(current_dir, 'data/raw/train.csv')
-PROCESSED_DATA_PATH = os.path.join(current_dir, 'data/processed/train_processed.csv')
-CHURN_FEATURES_PATH = os.path.join(current_dir, 'data/processed/best_features_for_churn.csv')
-DEVICE_UPGRADE_FEATURES_PATH = os.path.join(current_dir, 'data/processed/best_features_for_device_upgrade.csv')
-TEST_DATA_PATH = os.path.join(current_dir, 'data/raw/test.csv')
-MODEL_SAVE_PATH = 'models/trained_model.pkl'
+# Ensure all necessary directories exist
+required_dirs = [
+    os.path.join(BASE_DIR, 'data', 'raw'),
+    os.path.join(BASE_DIR, 'data', 'processed'),
+    os.path.join(BASE_DIR, 'models')
+]
+
+for directory in required_dirs:
+    os.makedirs(directory, exist_ok=True)
+
 
 # Model parameters
 MODEL_PARAMS = {
