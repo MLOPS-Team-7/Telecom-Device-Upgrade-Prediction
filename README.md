@@ -187,9 +187,8 @@ This structure ensures modularity, scalability, and ease of navigation for each 
    export GOOGLE_APPLICATION_CREDENTIALS="path/to/your-service-account-file.json"
   ```
 
-# Cloud-Based Machine Learning Pipeline with GCP
+## Cloud-Based Machine Learning Pipeline with GCP
 
-## Overview
 This section introduces the project's objective: building an end-to-end pipeline for machine learning using GCP. The pipeline incorporates preprocessing, automated workflows with Cloud Composer, and model training and inferences with Vertex AI.
 
 **Objective:**
