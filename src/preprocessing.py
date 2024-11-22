@@ -1,19 +1,6 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
-def drop_unnecessary_columns(data):
-    """
-    Drop columns that are not needed for modeling.
-    
-    Args:
-        data (pd.DataFrame): The input dataset.
-        
-    Returns:
-        pd.DataFrame: The dataset with unnecessary columns dropped.
-    """
-    columns_to_drop = ['CustomerID']  #customerID not relevant for prediction
-    data.drop(columns=columns_to_drop, inplace=True, errors='ignore')
-    return data
 
 def fill_missing_values(data):
     """
@@ -109,8 +96,7 @@ def preprocess_data(data):
     Returns:
         pd.DataFrame: The preprocessed dataset ready for modeling.
     """
-    # Drop unnecessary columns
-    data = drop_unnecessary_columns(data)
+     
     
     #Fill missing values
     data = fill_missing_values(data)
@@ -126,7 +112,7 @@ def main():
     Main function to test the preprocessing steps.
     """
     # Load the dataset (adjust path as necessary)
-    data_path = r'C:\Users\A V NITHYA\Downloads\train.csv'  # Adjust path as needed
+    data_path = r'C:\Users\A V NITHYA\MLOpsProject\Telecom-Device-Upgrade-Prediction\data\raw\train.csv' # Adjust path as needed
     data = pd.read_csv(data_path)
     
     # Apply preprocessing steps

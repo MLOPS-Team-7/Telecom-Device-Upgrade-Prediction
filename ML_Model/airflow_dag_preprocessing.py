@@ -125,26 +125,7 @@ def feature_engineering_task():
         print(f"Error in feature_engineering_task: {e}")
         raise
  
-# Task 4: Test Data Processing and Feature Selection
-def test_data_processing_and_feature_selection_task():
-    try:
-        test_data = pd.read_csv(TEST_DATA_FILE)
-        test_processed = preprocessing.preprocess_data(test_data)
-        test_processed.to_csv(TEST_PROCESSED_FILE, index=False)
-        #custom_upload_to_gcs(TEST_PROCESSED)
-       
-        best_features_test = feature_engineering.transform_and_save_test_features(
-            BEST_FEATURES_FILE,
-            TEST_PROCESSED_FILE,            
-            'Churn'
-        )
-        best_features_test.to_csv(BEST_FEATURES_TEST_FILE, index=False)
-        #custom_upload_to_gcs(BEST_FEATURES_TEST_FILE)
-        print("Test data processed and uploaded to GCS")
-        return True
-    except Exception as e:
-        print(f"Error in test_data_processing_and_feature_selection_task: {e}")
-        raise
+
  
 # Define tasks in the DAG
 load_data_operator = PythonOperator(
@@ -165,12 +146,9 @@ feature_engineering_operator = PythonOperator(
     dag=dag
 )
  
-test_data_operator = PythonOperator(
-    task_id='test_data_processing',
-    python_callable=test_data_processing_and_feature_selection_task,
-    dag=dag
-)
+
+
  
 # Set task dependencies
-load_data_operator >> preprocess_data_operator >> feature_engineering_operator >> test_data_operator
+load_data_operator >> preprocess_data_operator >> feature_engineering_operator 
  
