@@ -17,12 +17,19 @@ def find_optimal_k(data, target_column, k_range=range(25, 31)):
     Returns:
     int: The optimal value of k.
     """
+    # Drop non-numeric columns
+    non_numeric_cols = data.select_dtypes(exclude='number').columns
+    data = data.drop(columns=non_numeric_cols)
+
+    # Separate features and target
     X = data.drop(columns=[target_column])
     y = data[target_column]
 
+    # Initialize variables for finding the optimal k
     best_k = k_range.start
     best_score_sum = 0
 
+    # Iterate through k values to find the best one
     for k in k_range:
         selector = SelectKBest(score_func=f_classif, k=k)
         X_new = selector.fit_transform(X, y)
@@ -34,7 +41,6 @@ def find_optimal_k(data, target_column, k_range=range(25, 31)):
 
     print(f"Optimal k found: {best_k}")
     return best_k
-
 
 def select_best_k_features(data, target_column):
     """
@@ -87,11 +93,9 @@ def main():
     # Run feature engineering functions and capture the returned DataFrames
     find_optimal_k(data, target_column, k_range=range(25, 31))
     best_k_features_df = select_best_k_features(data, target_column)
-    ## device_upgrade_subset_df = create_device_upgrade_subset(data)
-
+    
     print(best_k_features_df.head(5))
-    #print(device_upgrade_subset_df.head(5))
-
+    
     print("Feature Engineering Completed")
 
 if __name__ == "__main__":
