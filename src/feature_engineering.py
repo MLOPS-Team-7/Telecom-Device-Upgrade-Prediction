@@ -95,7 +95,8 @@ def main():
     best_k_features_df = select_best_k_features(data, target_column)
     
     print(best_k_features_df.head(5))
-    
+    #print(device_upgrade_subset_df.head(5))
+
     print("Feature Engineering Completed")
 
 if __name__ == "__main__":
