@@ -1,0 +1,14 @@
+md5: a42295a88cda77b3c2b40b28293190c8
+frozen: true
+deps:
+- md5: 1a3de38cd41495a182d13de3086bfd5b.dir
+  size: 34335959
+  nfiles: 8
+  hash: md5
+  path: gs://data-source-telecom-customers/data/raw_data/
+outs:
+- md5: 5851a04bfdc427ecb1613fb85d14f36f.dir
+  size: 34335959
+  nfiles: 8
+  hash: md5
+  path: raw_data
