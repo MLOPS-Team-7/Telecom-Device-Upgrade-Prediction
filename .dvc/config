@@ -1,0 +1,5 @@
+[core]
+    remote = gcp-remote
+['remote "gcp-remote"']
+    url = gs://data-source-telecom-customers
+    credentialpath = tmp/data-source-telecom-customers/python_modules/axial-rigging-438817-h4-6e7c2d55c995.json
