@@ -19,7 +19,7 @@ MODEL_DISPLAY_NAME = "churn_model_2"
 EXISTING_DATASET_ID = "446996006911868928"  # Existing dataset ID
 TARGET_COLUMN = "Churn"
 BUDGET_MILLI_NODE_HOURS = 1000
-BUCKET_NAME = "holdout_batches"
+BUCKET_NAME = "vertex_model_data"
 
 # Check if model already exists in Vertex AI
 def check_model_existence(**kwargs):
@@ -46,21 +46,6 @@ def branch_task(**kwargs):
     else:
         return 'train_auto_ml_model'
 
-# Fetch the latest file from GCS
-def get_latest_gcs_file(**kwargs):
-    ti = kwargs['ti']
-    storage_client = storage.Client()
-    bucket = storage_client.get_bucket(BUCKET_NAME)
-    blobs = list(bucket.list_blobs())  # List all files in the bucket
-
-    # Find the latest file by timestamp
-    latest_blob = max(blobs, key=lambda blob: blob.updated, default=None)
-    if latest_blob:
-        latest_file_name = latest_blob.name  # Only get the file name, not the full path
-        print(f"Latest file found: {latest_file_name}")
-        ti.xcom_push(key='latest_gcs_file', value=latest_file_name)
-    else:
-        raise FileNotFoundError("No files found in the GCS bucket.")
 
 # Function to create batch prediction job
 def create_batch_prediction_job(**kwargs):
@@ -71,7 +56,7 @@ def create_batch_prediction_job(**kwargs):
     aiplatform.init(project=PROJECT_ID, location=LOCATION)
 
     # Set input and output configurations
-    gcs_input = f"gs://{BUCKET_NAME}/holdout_batch_1_features_small_set.jsonl"
+    gcs_input = f"gs://{BUCKET_NAME}/holdout_batch_2_features.jsonl"
     bigquery_output_prefix = "axial-rigging-438817-h4.Big_query_batch_prediction"
     
     batch_prediction_job = aiplatform.BatchPredictionJob.create(
@@ -79,7 +64,9 @@ def create_batch_prediction_job(**kwargs):
         model_name=model_name,
         gcs_source=gcs_input,
         predictions_format="bigquery",
-
+        starting_replica_count = 20,
+        max_replica_count = 30,
+        machine_type = "c2-standard-30",
         bigquery_destination_prefix=bigquery_output_prefix
 
     )
@@ -126,14 +113,7 @@ with DAG(
         python_callable=lambda: print("Model already exists, skipping training.")
     )
 
-    # Step 5: Fetch the latest file from GCS
-    fetch_latest_gcs_file = PythonOperator(
-        task_id="fetch_latest_gcs_file",
-        python_callable=get_latest_gcs_file,
-        provide_context=True
-    )
-
-    # Step 6: Create Batch Prediction Job
+    # Step 5: Create Batch Prediction Job
     create_batch_prediction_job_task = PythonOperator(
         task_id="create_batch_prediction_job",
         python_callable=create_batch_prediction_job,
@@ -144,4 +124,4 @@ with DAG(
     check_model_task >> branch_task_operator
     branch_task_operator >> train_auto_ml_model
     branch_task_operator >> skip_training
-    skip_training >> fetch_latest_gcs_file >> create_batch_prediction_job_task
+    skip_training >> create_batch_prediction_job_task
