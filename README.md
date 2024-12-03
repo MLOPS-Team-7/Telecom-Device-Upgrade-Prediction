@@ -14,6 +14,12 @@
    - [1. Clone the Repository](#1-clone-the-repository)
    - [2. Install Dependencies](#2-install-dependencies)
    - [3. Set Up GCP Authentication](#3-set-up-gcp-authentication)
+8. [Pipeline Workflow](#pipeline-workflow)
+   - [1. Data Loading](#data-loading)
+   - [2. Cloud Composer Workflow](#cloud-composer-workflow)
+   - [3. Model Training on Vertex AI](#model-training-on-vertex-ai)
+   - [4. Model Validation and Bias Detection](#model-validation-and-bias-detection)
+   - [5. Experiment Tracking and Hyperparameter Tuning](#experiment-tracking-and-hyperparameter-tuning)
 
 
 ---
@@ -180,5 +186,108 @@ This structure ensures modularity, scalability, and ease of navigation for each 
    ```bash
    export GOOGLE_APPLICATION_CREDENTIALS="path/to/your-service-account-file.json"
   ```
+
+## Cloud-Based Machine Learning Pipeline with GCP
+
+This section introduces the project's objective: building an end-to-end pipeline for machine learning using GCP. The pipeline incorporates preprocessing, automated workflows with Cloud Composer, and model training and inferences with Vertex AI.
+
+**Objective:**
+- Transition from local data preprocessing to cloud-based orchestration.
+- Develop and evaluate machine learning models using both AutoML and custom-built ML models.
+- Ensure reproducibility, scalability, and fairness in model development.
+
+---
+
+## Pipeline Workflow
+
+### Data Loading
+The transition from a local processing environment to the cloud was facilitated using Google Cloud Composer. After preprocessing the data locally in Visual Studio Code, it was essential to ensure scalability and automation, prompting the move to Google Cloud Platform (GCP). The data was uploaded to Google Cloud Storage (GCS), which served as a centralized repository for storing raw and processed data.
+
+- **Airflow DAG using Cloud Composer:**  
+  The use of Cloud Composer enabled the orchestration of complex workflows through Airflow’s Directed Acyclic Graphs (DAGs). These DAGs automated the execution of preprocessing modules, ensuring seamless integration with the cloud infrastructure. Additionally, all dependencies and Python libraries required for preprocessing were mirrored in the Composer environment, maintaining consistency with the local setup.
+
+---
+
+### Cloud Composer Workflow
+
+#### Setting Up Cloud Composer
+- Configured with necessary Google Cloud services, such as `google-cloud-aiplatform` and `google-cloud-storage`.
+- Integrated with Google Cloud Storage (GCS) for seamless data ingestion and output handling.
+- Environment mirrored local modules to ensure compatibility and scalability.
+
+#### DAG 1: Data Processing Workflow
+**Pipeline Steps:**
+1. **Load Raw Data:** Ingested raw data from GCS buckets and validated its initial state.
+2. **Integrate Local Modules:**  
+   - Feature engineering to derive additional attributes.  
+   - Cleaning operations to handle missing values, duplicates, and inconsistencies.
+3. **Save Processed Data:** Cleaned datasets were stored back in GCS, ready for subsequent machine learning tasks.
+
+**Outputs:**  
+Fully cleaned and preprocessed datasets stored in GCS for downstream operations like training machine learning models in Vertex AI.
+
+---
+
+### Model Training on Vertex AI
+
+#### Approach 1: AutoML via Colab Notebooks
+- Automated tasks such as uploading data, initiating training jobs, and retrieving evaluation metrics using Python scripts.
+- **Benefits:** Greater control and customizability over the AutoML process.
+- **Challenges:** Required resource optimization for long-running training tasks.
+
+#### Approach 2: Custom Model Development
+- Used XGBoost for manual training, hyperparameter tuning, and evaluation.
+- **Workflow:**
+  - Data was loaded from GCS, preprocessed programmatically, and trained using XGBoost.
+  - Dockerized the model for consistency and scalability, stored the image in Google Container Registry (GCR).
+- **Drawbacks:** Achieved ~65% accuracy, which was suboptimal compared to AutoML results.
+
+#### Approach 3: Airflow-Integrated AutoML
+- Integrated AutoML with Airflow DAGs in Cloud Composer.
+- **Pipeline Steps:**
+  1. Check Model Registry for existing trained models.
+  2. Trigger AutoML training only if no models exist.
+  3. Evaluate model performance and select the best candidate for deployment.
+- **Advantages:** Fully automated and efficient training workflow.
+
+#### Conditional Model Utilization Workflow
+- Checked for pre-trained models in the registry before proceeding with new training.
+- Efficiently managed resources and maintained a seamless model lifecycle.
+
+#### Notification and Alerts
+- Automatic email notifications were triggered upon successful model training and batch predictions.
+
+---
+
+### Model Validation and Bias Detection
+
+#### Validation
+- AutoML performed dataset validation, handled hyperparameter tuning, and selected the best-performing model using metrics like precision, recall, F1 score, and ROC AUC.
+
+#### Inferences after Model Validation
+- Generated batch predictions using the test set, stored results in BigQuery for scalability and integration.
+
+#### Sensitivity Analysis
+- Vertex AI’s tools, including SHAP values, analyzed feature importance and the robustness of predictions.
+- Results were stored in GCS for review and presentation.
+
+#### Bias Detection
+- Focused on the `CurrentEquipmentDays` column, dividing it into slices to evaluate fairness.
+- Results were stored in BigQuery for further analysis.
+
+---
+
+### Experiment Tracking and Hyperparameter Tuning
+- Vertex AI managed experiment tracking, model versioning, and artifact management.
+- Provided comprehensive logs of hyperparameter configurations, metrics, and visualizations like confusion matrices and feature importance graphs.
+
+---
+
+This successfully demonstrates the development of a fully cloud-native machine learning pipeline, eliminating the need for local dependencies. By leveraging GCP services such as Cloud Composer, Vertex AI, BigQuery, and Google Cloud Storage, all components of the pipeline—from data preprocessing to model training and deployment—were executed seamlessly on the cloud.
+
+- Cloud Composer streamlined workflows by orchestrating preprocessing and training tasks.
+- Vertex AI facilitated robust model development and tracking, enabling reproducibility and scalability.
+- This approach highlights the flexibility and efficiency of cloud-based workflows for deploying advanced machine learning models.
+
 
 

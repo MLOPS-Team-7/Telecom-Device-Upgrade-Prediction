@@ -1,19 +1,6 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
-def drop_unnecessary_columns(data):
-    """
-    Drop columns that are not needed for modeling.
-    
-    Args:
-        data (pd.DataFrame): The input dataset.
-        
-    Returns:
-        pd.DataFrame: The dataset with unnecessary columns dropped.
-    """
-    columns_to_drop = ['CustomerID']  #customerID not relevant for prediction
-    data.drop(columns=columns_to_drop, inplace=True, errors='ignore')
-    return data
 
 def fill_missing_values(data):
     """
@@ -109,11 +96,72 @@ def preprocess_data(data):
     Returns:
         pd.DataFrame: The preprocessed dataset ready for modeling.
     """
-    # Drop unnecessary columns
-    data = drop_unnecessary_columns(data)
+     
     
     #Fill missing values
     data = fill_missing_values(data)
+    
+    # Encode categorical columns
+    data = encode_categorical_columns(data)
+    
+    print("Data preprocessing completed")
+    return data
+
+def fill_missing_values_new_data(data):
+    """
+    Fill missing values in numerical columns when no Churn is present,
+    and fill missing values in categorical columns with the mode
+
+    Args:
+        data (pd.DataFrame): The input dataset with missing values.
+        
+    Returns:
+        pd.DataFrame: The dataset with filled missing values.
+    """
+    numerical_columns = ['MonthlyRevenue', 'MonthlyMinutes', 'TotalRecurringCharge', 'DirectorAssistedCalls',
+                         'OverageMinutes', 'RoamingCalls', 'PercChangeMinutes', 'PercChangeRevenues', 
+                         'DroppedCalls', 'BlockedCalls', 'UnansweredCalls', 'CustomerCareCalls', 
+                         'ThreewayCalls', 'ReceivedCalls', 'OutboundCalls', 'InboundCalls', 'PeakCallsInOut', 
+                         'OffPeakCallsInOut', 'DroppedBlockedCalls', 'CallForwardingCalls', 'CallWaitingCalls', 
+                         'MonthsInService', 'UniqueSubs', 'ActiveSubs', 'Handsets', 'HandsetModels', 
+                         'CurrentEquipmentDays', 'AgeHH1', 'AgeHH2', 'RetentionCalls', 'RetentionOffersAccepted', 
+                         'ReferralsMadeBySubscriber', 'AdjustmentsToCreditRating']
+    
+    categorical_columns = ['OwnsMotorcycle', 'HandsetRefurbished', 'HandsetWebCapable', 'TruckOwner', 
+                      'RVOwner', 'Homeownership', 'BuysViaMailOrder', 'RespondsToMailOffers', 'OptOutMailings', 
+                      'NonUSTravel', 'OwnsComputer', 'HasCreditCard', 'NewCellphoneUser', 'NotNewCellphoneUser', 
+                      'MadeCallToRetentionTeam','ChildrenInHH','CreditRating', 'PrizmCode', 'Occupation', 'MaritalStatus', 'IncomeGroup', 'HandsetPrice','ServiceArea']  
+
+    
+    for column in numerical_columns:
+        if column in data.columns:
+            data[column] = data[column].fillna(data[column].median())
+    
+    
+    for column in categorical_columns:
+     if column in data.columns:
+        if not data[column].mode().empty:
+            fill_value = data[column].mode()[0]
+        else:
+            fill_value = data[column].dropna().iloc[0] if not data[column].dropna().empty else None
+        data[column] = data[column].fillna(fill_value)
+    return data
+
+def preprocess_new_data(data):
+
+    """ Preprocess the dataset by handling missing values, encoding categorical features,
+    and dropping unnecessary columns.
+    
+    Args:
+        data (pd.DataFrame): The input dataset to preprocess.
+        
+    Returns:
+        pd.DataFrame: The preprocessed dataset ready for modeling.
+    """
+     
+    
+    #Fill missing values
+    data = fill_missing_values_new_data(data)
     
     # Encode categorical columns
     data = encode_categorical_columns(data)
@@ -126,14 +174,14 @@ def main():
     Main function to test the preprocessing steps.
     """
     # Load the dataset (adjust path as necessary)
-    data_path = r'C:\Users\A V NITHYA\Downloads\train.csv'  # Adjust path as needed
+    data_path = r'C:\Users\A V NITHYA\MLOpsProject\Telecom-Device-Upgrade-Prediction\data\raw\holdout_batch_4.csv' # Adjust path as needed
     data = pd.read_csv(data_path)
     
     # Apply preprocessing steps
-    preprocessed_data = preprocess_data(data)
-    
+    preprocessed_hold_out_data = preprocess_new_data(data)
+    preprocessed_hold_out_data.to_csv(r'C:\Users\A V NITHYA\MLOpsProject\Telecom-Device-Upgrade-Prediction\data\processed\holdout_batch_4_processed.csv', index=False)
     # Display first few rows of the preprocessed data for verification
-    print(preprocessed_data.head())
+    print(preprocessed_hold_out_data.head())
 
 if __name__ == "__main__":
     main()
