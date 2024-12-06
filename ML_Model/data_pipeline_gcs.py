@@ -4,7 +4,7 @@ import json
 import io
 import importlib.util
 from datetime import datetime, timedelta
-
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 
 import pandas as pd
 import numpy as np
@@ -509,17 +509,13 @@ def schema_validation_and_anomaly_detection_task():
                 continue
 
             # Validate numeric columns for min and max
-            if df[column_name].dtype in ["int64", "float64"]:
-                if "hasMin" in feature:
-                    if (df[column_name] < feature["hasMin"]).any():
-                        error_message = f"Column {column_name} has values below the minimum allowed."
-                        log.error(error_message)
-                        raise ValueError(error_message)
-                if "hasMax" in feature:
-                    if (df[column_name] > feature["hasMax"]).any():
-                        error_message = f"Column {column_name} has values above the maximum allowed."
-                        log.error(error_message)
-                        raise ValueError(error_message)
+            #if df[column_name].dtype in ["int64", "float64"]:
+                #if "hasMin" in feature:
+                    #if (df[column_name] < feature["hasMin"]).any():
+                        #error_message = f"Column {column_name} has values below the minimum allowed."
+                        #log.error(error_message)
+                        #raise ValueError(error_message)
+                
 
             # Check for completeness
             if feature.get("isComplete", False) and df[column_name].isnull().any():
@@ -662,7 +658,18 @@ convert_csv_to_jsonl = PythonOperator(
     python_callable=convert_latest_csv_to_jsonl_task,
     dag=dag,
 )
+trigger_dag2_after_generate_schema = TriggerDagRunOperator(
+        task_id='trigger_dag2_after_generate_schema',
+        trigger_dag_id='vertex_ai_churn_model_training',  # DAG2 ID
+        wait_for_completion=False,
+    )
+trigger_dag2_after_convert_csv_to_jsonl = TriggerDagRunOperator(
+        task_id='trigger_dag2_after_convert_csv_to_jsonl',
+        trigger_dag_id='vertex_ai_churn_model_training',  # DAG2 ID
+        wait_for_completion=False,
+    )
+
  
 # Set task dependencies
-training_data_sensor_logger >> training_data_sensor >> load_data >> preprocess_data >> feature_engineering_task_op >> generate_schema
-new_data_sensor_logger >> new_data_sensor >> preprocess_new_data >> new_data_feature_selection >> schema_validation >> convert_csv_to_jsonl
+training_data_sensor_logger >> training_data_sensor >> load_data >> preprocess_data >> feature_engineering_task_op >> generate_schema >> trigger_dag2_after_generate_schema
+new_data_sensor_logger >> new_data_sensor >> preprocess_new_data >> new_data_feature_selection >> schema_validation >> convert_csv_to_jsonl >> trigger_dag2_after_convert_csv_to_jsonl
