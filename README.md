@@ -2,6 +2,8 @@
 
 ![Overview Image](assets/image%20(11).png)
 
+DISCLAIMER: 📄✨ Please refer to the document Project_Workflow_with_Screenshots.pdf (available in this repository) for a detailed overview of the complete project workflow with relevant visuals and concise explanations. 🛠️📊
+
 ## Table of Contents
 
 1. [Overview](#overview)
