@@ -27,7 +27,7 @@ DISCLAIMER: 📄✨ Please refer to the document Project_Workflow_with_Screensho
 
 ## Overview
 
-The **Telecom Customer Churn and Device Upgrade Prediction** project aims to develop an end-to-end MLOps pipeline capable of forecasting churn and device upgrade events. By leveraging demographic and device-related features, the pipeline identifies customers likely to churn or upgrade, enabling telecom companies to target personalized offers. This solution is designed to enhance customer satisfaction, retention, and revenue growth.
+The **Telecom Customer Churn and Device Upgrade Prediction** project aims to develop an end-to-end MLOps pipeline capable of forecasting churn and device upgrade events. By leveraging demographic and device-related features, the pipeline identifies customers likely to churn and upgrade, enabling telecom companies to target personalized offers. This solution is designed to enhance customer satisfaction, retention, and revenue growth.
 
 ### Objectives:
 1. **Churn Prediction**: Identify customers at risk of leaving, enabling proactive retention measures.
@@ -130,17 +130,20 @@ This guide will walk you through the steps to set up and run the **Telecom Custo
 
 1. **Google Cloud Project**:
    - Ensure you have a GCP project created.
-   - Enable the following APIs in the project:
-     - Vertex AI API
-     - BigQuery API
-     - Cloud Storage API
-     - Cloud Composer API
+   - The following services are required for the project:
+     - Cloud Storage
+     - Vertex AI 
+     - Cloud Composer
+     - BigQuery     
+   
 
 2. **Service Account**:
-   - Create a service account and assign it the following roles:
-     - `Composer Admin`
-     - `BigQuery Admin`
-     - `Storage Admin`
+   - Create a service account for the project and assign the following roles manually through IAM:
+     - Storage Admin
+     - Composer Worker
+     - Cloud Build Logging Service Agent
+     - Monitoring Editor
+     - Logs Configuration Writer
 
 3. **Access to the Cloned Repository**:
    - Clone the repository: [GitHub Link](https://github.com/MLOPS-Team-7/Telecom-Device-Upgrade-Prediction.git).
@@ -158,7 +161,7 @@ This guide will walk you through the steps to set up and run the **Telecom Custo
    ```
 2. Navigate to the cloned folder.
 
-## Step 2: Create a GCS Bucket with Subfolders
+## Step 2: Create a GCS Bucket with Folders
 
 ### Create a New Bucket:
 1. Go to the **Google Cloud Console**.
@@ -169,20 +172,24 @@ This guide will walk you through the steps to set up and run the **Telecom Custo
    - **Default Storage Class**: Standard.
 4. Click **Create**.
 
-### Create Subfolders:
+### Create Folders:
 1. Once the bucket is created, click on the bucket name to open it.
-2. Use the **Create Folder** button to create the following subfolders:
+2. Use the **Create Folder** button to create the following folders:
    - `data/`: For storing dataset files.
-   - `modules/`: For storing Python modules.
+   - `python_modules/`: For storing Python modules.
+   - `snapshots/`: For storing cloud composer environment snapshot. 
 
 ### Upload Files:
 1. **Upload Dataset**:
    - Navigate to the `data/` directory in the cloned project.
-   - Upload all dataset files into the `data/` subfolder.
+   - Upload all dataset files into the `data/` folder.
 2. **Upload Python Modules**:
    - Navigate to the `src/` directory in the cloned project.
-   - Upload all Python module files into the `modules/` subfolder.
-
+   - Upload all Python module files into the `python_modules/` folder.
+3. **Upload Composer Environment Snapshot**:
+   - Navigate to the `cloud_composer_snapshot/` directory in the cloned project.
+   - Upload all the files in the snapshots/ folder. (These DAG files execute the entire project's workflow) 
+   
 ---
 
 ## Step 3: Set Up a Cloud Composer Environment
@@ -195,7 +202,12 @@ This guide will walk you through the steps to set up and run the **Telecom Custo
    - **Airflow Version**: Select **Airflow 2.9.3**.
 3. Click **Create** (this process may take a few minutes).
 
-### Upload DAG Files:
+### Load the Snapshot:
+1. Once the composer environment is created, click the "Load Snapshot" button.
+2. Select the environment snapshot by navigating to the snapshots folder inside your bucket.
+3. The composer environment is now updated with the necessary environment variables, airflow configuration overrides, labels, and PyPI packages required to run the project.
+   
+### Alternative Approach to Snapshot:
 1. Navigate to the `ML_Model_DAGs/` folder in the cloned repository on your local machine.
 2. Compress all files in this folder into a `.zip` file.
 3. In the **Google Cloud Console**, navigate to the **DAGs folder** of your Composer environment:
@@ -203,7 +215,7 @@ This guide will walk you through the steps to set up and run the **Telecom Custo
    - Click on your environment name.
    - Open the **Storage > DAGs folder** link.
 4. Use the **Upload Files** button to upload the `.zip` file.
-5. Once uploaded, unzip the file directly in the storage interface.
+5. Once uploaded, unzip the file directly in the storage interface. 
 
 ---
 
@@ -213,8 +225,14 @@ This guide will walk you through the steps to set up and run the **Telecom Custo
 - Whenever new data is added to the `data/` folder, the DAGs will automatically trigger to process it.
 
 ---
+## Step 5: Set Up GCP Pub/Sub Topic:
+- Navigate to the Pub/Sub section in the left-hand menu.
+- Click on Create Topic. Enter the topic name in the Topic ID field. It should be unique within your project and follow the format projects/{project-id}/topics/{topic-name}. Click on Create.
+- The device upgrade messages will be pushed to this Pub/Sub topic. These messages can later be used to automate the process of sending emails.
 
-## Step 5: Set Up BigQuery for Batch Predictions
+---
+
+## Step 6: Set Up BigQuery for Batch Predictions
 
 ### Create a BigQuery Dataset:
 1. In the **Google Cloud Console**, navigate to **BigQuery**.
