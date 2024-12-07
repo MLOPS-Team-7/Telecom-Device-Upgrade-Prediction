@@ -16,10 +16,11 @@ DISCLAIMER: 📄✨ Please refer to the document Project_Workflow_with_Screensho
    - [Prerequisites](#prerequisites)
    - [Steps to Set Up and Run the Project](#steps-to-set-up-and-run-the-project)
      - [Step 1: Clone the Repository](#step-1-clone-the-repository)
-     - [Step 2: Create a GCS Bucket with Subfolders](#step-2-create-a-gcs-bucket-with-subfolders)
+     - [Step 2: Create a GCS Bucket with Folders](#step-2-create-a-gcs-bucket-with-folders)
      - [Step 3: Set Up a Cloud Composer Environment](#step-3-set-up-a-cloud-composer-environment)
      - [Step 4: Configure DAGs to Watch for New Data](#step-4-configure-dags-to-watch-for-new-data)
-     - [Step 5: Set Up BigQuery for Batch Predictions](#step-5-set-up-bigquery-for-batch-predictions)
+     - [Step 5: Set Up GCP Pub/Sub Topic](#step-5-set-up-gcp-pubsub-topic)
+     - [Step 6: Set Up BigQuery for Batch Predictions](#step-6-set-up-bigquery-for-batch-predictions)
 6. [Contributors](#contributors)
 
 
